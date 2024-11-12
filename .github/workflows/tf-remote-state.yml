@@ -81,12 +81,12 @@ jobs:
             echo $STORAGE_ACCOUNT_CONNECTION_STRING
 
             echo "🎯 Getting storage blob named: " ${{ vars.BLOB_NAME }}
-            STORAGE_BLOB_EXISTS=$(az storage blob exists --name ${{ vars.BLOB_NAME }} --account-name ${{ vars.STORAGE_ACCOUNT_NAME }} --account-key $STORAGE_ACCOUNT_KEY --query exists)
+            STORAGE_BLOB_EXISTS=$(az storage blob exists --account-key $STORAGE_ACCOUNT_KEY --account-name ${{ vars.STORAGE_ACCOUNT_NAME }} --container-name ${{ vars.CONTAINER_NAME }}r --name ${{ vars.BLOB_NAME }} --query exists)
             if [ $STORAGE_BLOB_EXISTS == "false" ]; then
               echo ""
               echo "Storage blob not found. Creating..."
 
-            # generate backend.tf file
+            # generate terraform.tfstate file
             cd ${{ env.WORKING_DIRECTORY }}
             cat <<EOT > terraform.tfstate
             terraform {
@@ -100,4 +100,5 @@ jobs:
             EOT
 
             cat terraform.tfstate
+            fi
 
