@@ -67,6 +67,6 @@ jobs:
           # Subscription Id of the resource group
           subscription_id: f160f06a-ac2d-4779-a454-e265dc381318 # optional, default is empty
           # Terraform working directory
-          tf_working_directory: # optional, default is .
+          tf_working_directory: ./ # optional, default is .
                 
 
