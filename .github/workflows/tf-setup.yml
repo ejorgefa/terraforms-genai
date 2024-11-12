@@ -49,22 +49,24 @@ jobs:
         with:
           terraform_version: 1.9.8
 
-      - name: Terraform Init
-        id: init
-        env:
-          ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
-        run: |
-
-          terraform init \
-          -upgrade \
-          -backend-config="resource_group_name=${RESOURCE_GROUP_NAME}" \
-          -backend-config="storage_account_name=${STORAGE_ACCOUNT_NAME}" \
-          -backend-config="container_name=${CONTAINER_NAME}" \
-          -backend-config="key=${STORAGE_ACCOUNT_KEY}" \
-          -input=true \
-          -reconfigure
-
+      - name: Terraform init azurerm backend
+        # You may pin to the exact commit or the version.
+        # uses: ahmedig/terraform-azurerm-backend@65ed9d7f67790281b78670b7811d63d96f5e22ec
+        uses: ahmedig/terraform-azurerm-backend@v4
+        with:
+          # Azure Credentials in JSON format
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          # State file location - resource group name
+          resource_group_name: ${{ vars.RESOURCE_GROUP_NAME }}
+          # State file location - container name
+          container_name: ${{ vars.CONTAINER_NAME }}
+          # State file location - storage account name
+          storage_account_name: ${{ vars.STORAGE_ACCOUNT_NAME }}
+          # State file location - file name
+          file_name: ${{ vars.BLOB_NAME }} # optional, default is terraform.tfstate
+          # Subscription Id of the resource group
+          subscription_id: f160f06a-ac2d-4779-a454-e265dc381318 # optional, default is empty
+          # Terraform working directory
+          tf_working_directory: # optional, default is .
+                
 
