@@ -87,7 +87,7 @@ jobs:
               echo "Storage blob not found. Creating..."
 
             # generate backend.tf file
-            cd ${{ env.WORKING_DIRECTOR }}
+            cd ${{ env.WORKING_DIRECTORY }}
             cat <<EOT > terraform.tfstate
             terraform {
               backend "azurerm" {
