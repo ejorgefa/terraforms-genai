@@ -1,0 +1,51 @@
+name: Create Infra with Terraforn
+
+on:
+  push:
+    branches: [dev]
+  # pull_request:
+  #   branches: [ main ]
+# Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  PROCESS: planning
+  WORKING_DIRECTORY: ./
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+
+  deploy-azure-infra-terraform:
+
+    name: Deploy to Azure with Terraform
+    runs-on: ubuntu-latest
+    permissions: write-all
+    environment: Development
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      # Login to Azure with OIDC
+      - name: Azure login
+        uses: azure/login@v2.2.0
+        with:
+          client-id: ${{ secrets.CLIENT_ID }}
+          tenant-id: ${{ secrets.TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+
+      # Install the latest version of Terraform CLI
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.9.8
+
