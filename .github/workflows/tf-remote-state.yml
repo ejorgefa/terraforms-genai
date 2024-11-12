@@ -99,5 +99,5 @@ jobs:
             }
             EOT
 
-            cat terraform.tfstate
+#            cat terraform.tfstate
 
