@@ -45,7 +45,12 @@ jobs:
 
       # Install the latest version of Terraform CLI
       - name: Install Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v3.1.2
         with:
           terraform_version: 1.9.8
+
+      - name: Terraform Init
+        run:
+          terraform init
+
 
